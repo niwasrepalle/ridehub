@@ -1,5 +1,10 @@
 name: Android demo
-on: [push, workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    paths: ["app/**", "gradle/**", "*.gradle.kts", "gradle.properties", "gradlew", ".github/workflows/**"]
+permissions:
+  contents: read
 jobs:
  build:
   runs-on: ubuntu-latest
@@ -9,9 +14,19 @@ jobs:
      with:
       distribution: temurin
       java-version: '17'
-   - uses: android-actions/setup-android@v3
-   - run: chmod +x gradlew && ./gradlew testDebugUnitTest lintDebug assembleDebug
+   - uses: android-actions/setup-android@v4
+     with:
+      packages: "platform-tools platforms;android-35 build-tools;35.0.0"
+   - run: chmod +x gradlew && ./gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug
    - uses: actions/upload-artifact@v4
      with:
       name: RideHub-demo-APK
       path: app/build/outputs/apk/debug/*.apk
+   - uses: actions/upload-artifact@v4
+     if: always()
+     with:
+      name: RideHub-test-and-lint-reports
+      path: |
+       app/build/reports/tests/
+       app/build/reports/lint-results-debug.html
+      if-no-files-found: ignore

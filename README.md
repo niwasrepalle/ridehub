@@ -1,4 +1,8 @@
-# RideHub 0.1 personal demo
+# RideHub
+
+An Android ride-comparison and personal ride-safety prototype by **Niwas Repalle**. Explore simulated provider offers and a user-controlled local GPS workflow in one app.
+
+**Demo boundary:** fares, drivers and booking states are simulated. Local device GPS is real when permission is granted; no provider APIs or hosted tracking service are connected.
 
 Native Kotlin / Jetpack Compose, Android 9+ (API 28), target 35. Dark monochrome UI, blue routes, red SOS. Splash is a procedural aerial street illustration with illuminated routes, no planets or characters. It is not a photographic map.
 
