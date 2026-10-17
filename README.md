@@ -30,7 +30,7 @@ Sources: https://www.rapido.bike/CustomerTerms , https://www.rapido.bike/Privacy
 Android location guidance: https://developer.android.com/develop/sensors-and-location/location/permissions and https://developer.android.com/develop/background-work/services/fgs/restrictions-bg-start
 
 ## Build
-Use JDK 17 and Android SDK 35: `./gradlew testDebugUnitTest lintDebug assembleDebug`. Windows: `gradlew.bat`. GitHub Actions workflow included; upload this project as repository root, run workflow and download APK artifact. Local build used the already available portable toolchain. APK is a debug-signed personal preview.
+Use JDK 17 and Android SDK 35: `./gradlew testDebugUnitTest lintDebug assembleDebug`. Windows: `gradlew.bat`. GitHub Actions runs JVM tests, lint and APK assembly. The [17 October 2026 run](https://github.com/niwasrepalle/ridehub/actions/runs/39008367123) passed; download its RideHub-demo-APK artifact and extract the APK. Local build used the already available portable toolchain. APK is a debug-signed personal preview.
 
 ## Live tracking backend contract for future implementation
 Explicit sharing consent precedes session creation. Authenticated uploader receives a random >=128-bit bearer viewer token; server stores only a hash, expires session at trip end or at most one hour, supports immediate revoke, TLS only, rate limits, no indexing, no analytics, no cached location responses. Viewer displays last-update time, accuracy, stale/offline/ended states. Retain only latest point, delete at expiry/revoke. Never merge provider driver location with the phone GPS stream. App must display sharing status and a Stop sharing action and stop/revoke on trip end. These controls are design requirements, not deployed behavior.
