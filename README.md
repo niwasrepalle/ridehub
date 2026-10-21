@@ -6,6 +6,10 @@ An Android ride-comparison and personal ride-safety prototype by **Niwas Repalle
 
 Native Kotlin / Jetpack Compose, Android 9+ (API 28), target 35. Dark monochrome UI, blue routes, red SOS. Splash is a procedural aerial street illustration with illuminated routes, no planets or characters. It is not a photographic map.
 
+## Engineering guide
+
+Read [Architecture and design decisions](ARCHITECTURE.md) for the component diagram, search cancellation flow, data lifetime and current tradeoffs. Build evidence is in [VALIDATION.md](VALIDATION.md); physical-device results are tracked separately in [DEVICE-TEST-RESULTS.md](DEVICE-TEST-RESULTS.md).
+
 ## Implemented
 - Onboarding and password-free provider connection placeholders.
 - Illustrated map, editable pickup/destination and local demo-place search.
