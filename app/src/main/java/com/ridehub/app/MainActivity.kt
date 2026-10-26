@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
    val text = buildString {
     append("RideHub DEMO trip\n${q?.provider ?: "No provider"} • ${q?.type ?: "No ride"}\nFrom: $pickup\nTo: $destination\nDriver and fares are simulated.\n")
     val l = fix
-    if (l != null && System.currentTimeMillis() - l.time < 120000) append("One-time location snapshot (not live): https://maps.google.com/?q=${l.latitude},${l.longitude}\nAccuracy ±${l.accuracy.toInt()} m\n")
+    if (l != null && isLocationFresh(l.elapsedRealtimeNanos, SystemClock.elapsedRealtimeNanos())) append("One-time location snapshot (not live): https://maps.google.com/?q=${l.latitude},${l.longitude}\nAccuracy ±${l.accuracy.toInt()} m\n")
     else append("No fresh location available.\n")
     if (permittedRapidoLink(link)) append("User-provided Rapido tracking link: $link\n")
     append("RideHub hosted live tracking is not connected.")

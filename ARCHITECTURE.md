@@ -47,9 +47,9 @@ The user requests tracking while the activity is visible. The service checks coa
 
 Location and status are held in LocalTrack StateFlows. Stopping the service removes updates and clears the current location. START_NOT_STICKY avoids an automatic service restart after termination.
 
-Sharing builds a text payload only after a user action. It labels rides as simulated and includes a one-time location snapshot when the current wall-clock freshness check is below two minutes. Android's share sheet lets the user select the destination or cancel. No recipient is contacted automatically.
+Sharing builds a text payload only after a user action. It labels rides as simulated and includes a one-time location snapshot when the elapsed-realtime freshness check is below two minutes. Android's share sheet lets the user select the destination or cancel. No recipient is contacted automatically.
 
-The current freshness calculation uses the location's wall-clock timestamp. Clock changes and future timestamps need explicit handling before relying on this check in production; a monotonic location-age calculation is a future improvement.
+Location freshness compares Location.elapsedRealtimeNanos with SystemClock.elapsedRealtimeNanos from the same boot. It accepts ages below two minutes and rejects future or negative timestamps. Wall-clock changes do not affect this calculation. The clock includes time spent asleep; see [Android SystemClock](https://developer.android.com/reference/android/os/SystemClock). These values must not be compared across devices or reboots.
 
 ## Data lifetime
 
