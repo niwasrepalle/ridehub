@@ -74,7 +74,7 @@ SOS uses a cancellable countdown and ACTION_DIAL. The user still has to place th
 - Compose UI and Android side effects share one activity for a compact prototype. Extract share-payload construction, freshness checks and trip state before growing the feature set.
 - The ViewModel survives ordinary activity recreation, while many remember values do not. Saved state and lifecycle/device testing are needed for predictable recovery.
 - The current StateFlow list update assumes serialized use through the default main dispatcher. Revisit atomic updates if a real provider layer introduces concurrent writers.
-- Search tests use real coroutine delays. A virtual test scheduler would make broader timing coverage faster and more controlled.
+- Search tests use a shared coroutine test scheduler and virtual time. They exercise independent completion, cancellation just before completion, an in-flight retry and repeated ride-type changes without real-time sleeps. These deterministic scenarios do not establish arbitrary multi-threaded race safety.
 - LiveTrackingGateway declares create/publish/revoke operations only. Authentication, expiry, consent, revocation and a viewer remain future work; no hosted link is generated.
 - A licensed mapping SDK and authorized provider APIs would be required for real routes, availability, fares and booking.
 
@@ -83,3 +83,5 @@ SOS uses a cancellable countdown and ACTION_DIAL. The user still has to place th
 The [17 October 2026 cloud run](https://github.com/niwasrepalle/ridehub/actions/runs/39008367123) passed JVM tests, lint and debug APK assembly. Those results cover the earlier tested source, not physical Android behavior. This architecture addition changes documentation only.
 
 Use [DEVICE-CHECKS.md](DEVICE-CHECKS.md) and [DEVICE-TEST-RESULTS.md](DEVICE-TEST-RESULTS.md) for permission, GPS, sharing, interruption and dialer acceptance. Existing NOT RUN entries must remain so until actual observations are recorded. See [VALIDATION.md](VALIDATION.md) for build evidence.
+
+Coroutine test APIs follow the [official coroutine testing guide](https://developer.android.com/kotlin/coroutines/test). The test dependency matches the application coroutine version (1.9.0); it is not included in the runtime APK.
