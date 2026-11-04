@@ -9,7 +9,7 @@ enum class SearchPhase { Idle, Searching, Ready, Cancelled, Failed }
 data class Quote(val provider: String, val type: String = "Car", val phase: SearchPhase = SearchPhase.Idle, val fare: Int = 0, val generation: Int = 0)
 fun permittedRapidoLink(value: String): Boolean = try {
  val u = URI(value)
- u.scheme == "https" && u.host == "trk.rapido.bike" && u.port == -1 && u.userInfo == null && u.query == null && u.fragment == null && Regex("/RAPIDO/[a-fA-F0-9]{24}").matches(u.path)
+ u.scheme == "https" && u.host == "trk.rapido.bike" && u.port == -1 && u.userInfo == null && u.query == null && u.fragment == null && Regex("/RAPIDO/[a-fA-F0-9]{24}").matches(u.rawPath)
 } catch (_: Exception) { false }
 class SearchModel(private val dispatcher: CoroutineDispatcher = Dispatchers.Main) : ViewModel() {
  val quotes = MutableStateFlow(listOf("Uber", "Ola", "Rapido").map { Quote(it) })

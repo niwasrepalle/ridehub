@@ -65,7 +65,7 @@ A saved trusted contact is a local reference, not an automatic alert recipient. 
 
 ## URL and SOS boundaries
 
-permittedRapidoLink accepts only HTTPS, the exact trk.rapido.bike host, no explicit port/user info/query/fragment, and the supported /RAPIDO/ path with a 24-character hexadecimal token. Shape validation does not prove a trip exists, the link is owned, or the token is current. The application opens supported links externally without extracting their content.
+permittedRapidoLink accepts only HTTPS, the exact trk.rapido.bike host, no explicit port/user info/query/fragment, and the exact raw /RAPIDO/ path with a 24-character hexadecimal token. Percent-encoded path variants are rejected rather than decoded into the allowlist. Shape validation does not prove a trip exists, the link is owned, or the token is current. The application opens supported links externally without extracting their content.
 
 SOS uses a cancellable countdown and ACTION_DIAL. The user still has to place the call. The countdown is cleared when the activity stops. This prototype does not dispatch emergency assistance or notify contacts.
 
@@ -85,3 +85,5 @@ The [17 October 2026 cloud run](https://github.com/niwasrepalle/ridehub/actions/
 Use [DEVICE-CHECKS.md](DEVICE-CHECKS.md) and [DEVICE-TEST-RESULTS.md](DEVICE-TEST-RESULTS.md) for permission, GPS, sharing, interruption and dialer acceptance. Existing NOT RUN entries must remain so until actual observations are recorded. See [VALIDATION.md](VALIDATION.md) for build evidence.
 
 Coroutine test APIs follow the [official coroutine testing guide](https://developer.android.com/kotlin/coroutines/test). The test dependency matches the application coroutine version (1.9.0); it is not included in the runtime APK.
+
+Raw-path validation uses [Java URI.getRawPath](https://developer.android.com/reference/java/net/URI#getRawPath()) so the validated path matches the literal path passed to the external browser. This is format validation, not proof of link ownership or trip validity.
