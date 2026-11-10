@@ -34,7 +34,7 @@ There is no provider HTTP client or tracking backend in this flow. The applicati
 
 ## Search flow and stale results
 
-1. A provider search cancels that provider's prior job and increments its generation.
+1. A provider search cancels that provider's prior job, clears its previous fare and increments its generation.
 2. The model marks the quote Searching and launches a coroutine with a simulated delay.
 3. A result becomes Ready only when its captured generation still matches the current quote.
 4. Changing ride type cancels that provider's search, clears its fare and returns it to Idle. Other providers continue independently.

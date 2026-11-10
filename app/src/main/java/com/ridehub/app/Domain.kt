@@ -16,7 +16,7 @@ class SearchModel(private val dispatcher: CoroutineDispatcher = Dispatchers.Main
  private val scope = CoroutineScope(SupervisorJob() + dispatcher)
  private val jobs = mutableMapOf<String, Job>()
  fun update(p: String, transform: (Quote) -> Quote) { quotes.value = quotes.value.map { if (it.provider == p) transform(it) else it } }
- fun cancel(p: String) { jobs.remove(p)?.cancel(); update(p) { it.copy(phase = SearchPhase.Cancelled, generation = it.generation + 1) } }
+ fun cancel(p: String) { jobs.remove(p)?.cancel(); update(p) { it.copy(phase = SearchPhase.Cancelled, fare = 0, generation = it.generation + 1) } }
  fun type(p: String, t: String) { cancel(p); update(p) { it.copy(type = t, phase = SearchPhase.Idle, fare = 0) } }
  fun search(p: String) {
   cancel(p)

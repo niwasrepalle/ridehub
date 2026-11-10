@@ -74,4 +74,31 @@ class SearchTest {
         assertEquals(SearchPhase.Ready, model.quote("Uber").phase)
         assertEquals(SearchPhase.Idle, model.quote("Ola").phase)
     }
+
+    @Test fun retryAfterSuccessClearsPreviousFareWhileSearching() = runTest {
+        val model = SearchModel(StandardTestDispatcher(testScheduler))
+        model.search("Uber")
+        advanceUntilIdle()
+        assertEquals(190, model.quote("Uber").fare)
+        model.search("Uber")
+        assertEquals(SearchPhase.Searching, model.quote("Uber").phase)
+        assertEquals(0, model.quote("Uber").fare)
+        advanceUntilIdle()
+        assertEquals(SearchPhase.Ready, model.quote("Uber").phase)
+        assertEquals(190, model.quote("Uber").fare)
+    }
+
+    @Test fun cancellingCompletedQuoteClearsOnlyItsFare() = runTest {
+        val model = SearchModel(StandardTestDispatcher(testScheduler))
+        model.search("Uber"); model.search("Ola")
+        advanceUntilIdle()
+        val olaBefore = model.quote("Ola")
+        assertEquals(190, model.quote("Uber").fare)
+        model.cancel("Uber")
+        assertEquals(SearchPhase.Cancelled, model.quote("Uber").phase)
+        assertEquals(0, model.quote("Uber").fare)
+        assertEquals(olaBefore, model.quote("Ola"))
+        advanceUntilIdle()
+        assertEquals(0, model.quote("Uber").fare)
+    }
 }
